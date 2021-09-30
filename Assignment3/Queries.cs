@@ -29,11 +29,11 @@ namespace Assignment3
 
 		public static bool IsSithLord(Wizard w) => w.Name.StartsWith("Darth");
 
-		public static int? GetFirstWhere(this Lazy<IReadOnlyCollection<Wizard>> wizards, Predicate<string> predicate)
+		public static int? GetFirstWhere(this Lazy<IReadOnlyCollection<Wizard>> wizards, Predicate<Wizard> predicate)
 		{
 			var output = (
 			    from w in wizards.Value
-			    where IsSithLord(w)
+			    where predicate(w)
 			    orderby w.Year
 			    select w.Year
 			).First();
@@ -41,10 +41,10 @@ namespace Assignment3
 			return output;
 		}
 
-		public static int? GetFirstWhereE(this Lazy<IReadOnlyCollection<Wizard>> wizards, Predicate<string> predicate)
+		public static int? GetFirstWhereE(this Lazy<IReadOnlyCollection<Wizard>> wizards, Func<Wizard, bool> predicate)
 		{
 			var output = wizards.Value
-				.Where(IsSithLord)
+				.Where(predicate)
 				.OrderBy(w => w.Year)
 				.Select(w => w.Year)
 				.First();
@@ -56,7 +56,7 @@ namespace Assignment3
 		{
             var output = (
 			    from w in wizards.Value
-			    where w.Medium == medium
+			    where w.Medium.Contains(medium)
 			    select (w.Name, w.Year)
 			).Distinct();
 
@@ -66,7 +66,7 @@ namespace Assignment3
 		public static IEnumerable<(string name, int? year)> GetByMediumE(this Lazy<IReadOnlyCollection<Wizard>> wizards, string medium)
 		{
             var output = wizards.Value
-				.Where(w => w.Medium == medium)
+				.Where(w => w.Medium.Contains(medium))
 				.Select(w => (w.Name, w.Year))
 				.Distinct();
 
