@@ -1,15 +1,15 @@
 using Xunit;
 
-namespace BDSA2020.Assignment02.Tests
+namespace Assignment3.Tests
 {
     public class WizardTests
     {
         [Fact]
-        public void Wizards_contains_2_wizards()
+        public void Wizards_contains_10_wizards()
         {
             var wizards = Wizard.Wizards.Value;
 
-            Assert.Equal(2, wizards.Count);
+            Assert.Equal(10, wizards.Count);
         }
 
         [Theory]
